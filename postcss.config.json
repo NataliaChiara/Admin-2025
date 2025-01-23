@@ -1,0 +1,39 @@
+{
+  "plugins": [
+    [
+      "postcss-custom-media-generator",
+      {
+        "--small": "(min-width: 36em)",
+        "--medium": "(min-width: 48em)",
+        "--large": "(min-width: 62em)",
+        "--extraLarge": "(min-width: 75em)",
+        "--extraExtraLarge": "(min-width: 87.5em)",
+        "--ultraLarge": "(min-width: 105em)",
+        "--retina": "(min-width: 140em)"
+      }
+    ],
+    "postcss-flexbugs-fixes",
+    [
+      "postcss-preset-env",
+      {
+        "autoprefixer": {
+          "flexbox": "no-2009"
+        },
+        "stage": 3,
+        "features": {
+          "custom-properties": false
+        }
+      }
+    ],
+    "postcss-custom-media",
+    [
+      "postcss-pxtorem",
+      {
+        "propList": [
+          "*"
+        ]
+      }
+    ],
+    "postcss-nested"
+  ]
+}

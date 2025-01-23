@@ -1,0 +1,104 @@
+.container {
+  width: fit-content;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  padding: 40px 30px;
+  position: relative;
+
+  & button {
+    cursor: pointer;
+  }
+
+  & input,
+  & select {
+    width: 150px;
+    height: 30px;
+    color: gray;
+    border: 1px solid #dddddd;
+  }
+
+  & input {
+    padding: 5px;
+  }
+
+  & textarea {
+    padding: 5px;
+    resize: none;
+    width: 150px;
+    height: 120px;
+    border: 1px solid #dddddd;
+  }
+
+  &__close {
+    position: absolute;
+    background: none;
+    border: none;
+    top: 5px;
+    right: 15px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & button {
+      width: 300px;
+      margin-top: 20px;
+      height: 30px;
+      background-color: #0050c3;
+      border-radius: 5px;
+      border: none;
+      color: white;
+      transition: 0.2s;
+
+      &:hover {
+        scale: 1.01;
+      }
+      &:active {
+        scale: 1;
+      }
+    }
+
+    &__up,
+    &__down {
+      display: flex;
+    }
+
+    &__down {
+      &__img {
+        width: 150px;
+        height: 150px;
+        border: 1px solid #dddddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &__texts {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+.error {
+  margin-top: 5px;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+  width: 300px;
+  text-align: center;
+  color: red;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
