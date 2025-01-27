@@ -5,10 +5,6 @@
   padding: 40px 30px;
   position: relative;
 
-  & button {
-    cursor: pointer;
-  }
-
   & input,
   & select {
     width: 150px;
@@ -51,21 +47,13 @@
       border-radius: 5px;
       border: none;
       color: white;
-      transition: 0.2s;
 
       @media (--small) {
         width: 300px;
       }
 
-      &:hover {
-        scale: 1.01;
-      }
-      &:active {
-        scale: 1;
-      }
       &:disabled {
         pointer-events: none;
-        cursor: default;
         opacity: 0.5;
       }
     }
@@ -97,10 +85,10 @@
         }
 
         &__input {
+          cursor: pointer;
           position: absolute;
           width: 150px;
           height: 150px !important;
-          cursor: pointer;
           opacity: 0;
         }
 
@@ -130,9 +118,10 @@
 
         &__new_input {
           display: flex;
+          width: 150px;
 
           & input {
-            width: 120px;
+            width: 100%;
           }
 
           & button {

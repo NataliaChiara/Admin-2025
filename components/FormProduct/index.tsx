@@ -5,16 +5,17 @@ import Image from 'next/image';
 import s from './FormProduct.module.css';
 import { Toaster, toast } from 'react-hot-toast';
 import { ProductType } from '@/types/model';
+import { sections } from '@/lib/data';
 
 const FormProduct = () => {
   const emptyProduct = {
     name: '',
+    slug: '',
     price: 0,
     description: '',
     section: '',
     image: ''
   };
-  const secciones = ['Wraps', 'Entradas', 'Hamburguesas', 'Bebidas'];
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState<ProductType>(emptyProduct);
@@ -45,7 +46,7 @@ const FormProduct = () => {
         const reader = new FileReader();
         reader.onloadend = () => {
           setImagePreview(reader.result as string);
-          // Aca se tendria que subir a firebase, obtener la url y esa url meterla a formData.image
+          // Aca se tendria que subir al storage, obtener la url y esa url meterla a formData.image
           setFormData(prev => ({ ...prev, image: reader.result as string }));
         };
         reader.readAsDataURL(file);
@@ -78,9 +79,9 @@ const FormProduct = () => {
 
     const { name, price, description, section /*, image*/ } = formData;
 
-    // Aca se subiria el producto a firebase y cuando sea correcta la respuesta se mostraria el toast de abajo
+    // Aca se subiria el producto al backend (tanto a productos como a secciones) y cuando sea correcta la respuesta se mostraria el toast de abajo
     toast.success(
-      `Producto enviado correctamente: Nombre: ${name}, Precio: ${price}, Sección: ${section}, Descripción: ${description.slice(0.15)}...`,
+      `Producto enviado correctamente: Nombre: ${name}, Slug: ${name.toLowerCase().replace(' ', '-')} Precio: ${price}, Sección: ${section}, Slug de la sección: ${section.toLowerCase().replace(' ', '-')}, Descripción: ${description.slice(0.15)}...`,
       { duration: 3000 }
     );
 
@@ -146,7 +147,7 @@ const FormProduct = () => {
             )}
           </div>
           <div className={s.container__form__down__texts}>
-            {newSection ? (
+            {newSection || sections.length === 0 ? (
               <div className={s.container__form__down__texts__new_input}>
                 <input
                   type="text"
@@ -155,7 +156,7 @@ const FormProduct = () => {
                   value={formData.section}
                   onChange={handleInputChange}
                 />
-                <button type='button' onClick={() => setNewSection(false)}>&lt;</button>
+                {sections.length >= 1 && <button type='button' onClick={() => setNewSection(false)}>&lt;</button>}
               </div>
             ) : (
               <select
@@ -165,10 +166,10 @@ const FormProduct = () => {
                 aria-label="Seleccionar sección"
               >
                 {formData.section === '' && <option value="">Sección</option>}
-                <optgroup label='Secciones'>
-                  {secciones.map((seccion) => (
-                    <option value={seccion} key={seccion}>
-                      {seccion}
+                <optgroup label="Secciones">
+                  {sections.map((seccion) => (
+                    <option value={seccion.name} key={seccion.slug}>
+                      {seccion.name}
                     </option>
                   ))}
                 </optgroup>
