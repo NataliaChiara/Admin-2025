@@ -1,0 +1,1 @@
+Para correr este proyecto primero se tiene que abrir MySQL Workbench y tambien se tiene que correr 'npm run dev' en el proyecto 'api-2025' que esta tambien en esta carpeta

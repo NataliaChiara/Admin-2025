@@ -5,6 +5,7 @@ import Image from 'next/image';
 import s from './FormProduct.module.css';
 import { Toaster, toast } from 'react-hot-toast';
 import { sections } from '@/lib/data';
+import { addProduct } from '@/app/api/api';
 
 const FormProduct = () => {
   const emptyProduct = {
@@ -74,17 +75,27 @@ const FormProduct = () => {
       price > 0;
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { name, price, description, section /*, image*/ } = formData;
+    const productToAdd = {
+      name: formData.name,
+      slug: formData.name.toLowerCase().replaceAll(' ', '-'),
+      price: formData.price,
+      description: formData.description,
+      sectionSlug: formData.section.toLowerCase().replaceAll(' ', '-'),
+      image: '/images/americana.webp'
+    }
 
-    // Aca se subiria el producto al backend (tanto a productos como a secciones) y cuando sea correcta la respuesta se mostraria el toast de abajo
-    toast.success(
-      `Producto enviado correctamente: Nombre: ${name}, Slug: ${name.toLowerCase().replace(' ', '-')} Precio: ${price}, Sección: ${section}, Slug de la sección: ${section.toLowerCase().replace(' ', '-')}, Descripción: ${description.slice(0.15)}...`,
-      { duration: 3000 }
-    );
+    const success = await addProduct(productToAdd);
 
+    if (success) {
+      toast.success(`Producto '${formData.name}' agregado con éxito`);
+    } else {
+      toast.error('Hubo un error al agregar el producto');
+    }
+
+    // Restablecer los datos del formulario y otros estados
     setFormData(emptyProduct);
     clearImage();
     setNewSection(false);
