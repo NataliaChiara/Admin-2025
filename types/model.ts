@@ -3,7 +3,7 @@ export interface ProductType {
   slug: string;
   price: number,
   description: string,
-  section: string,
+  sectionSlug: string,
   image: string,
 }
 

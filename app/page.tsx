@@ -13,7 +13,7 @@ export default function Home() {
       </nav>
       <main className={s.page__main}>
         <div className={s.page__main__info}>
-          <Image src={logo} width={150} height={150} alt="Logo" aria-label="Logo" />
+          <Image src={logo} width={200} height={200} alt="Logo" aria-label="Logo" />
           <h1>{name}</h1>
           <div className={s.page__main__info__contact}>
             {contact.map((item) => {

@@ -4,7 +4,6 @@ import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import Image from 'next/image';
 import s from './FormProduct.module.css';
 import { Toaster, toast } from 'react-hot-toast';
-import { ProductType } from '@/types/model';
 import { sections } from '@/lib/data';
 
 const FormProduct = () => {
@@ -18,7 +17,7 @@ const FormProduct = () => {
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [formData, setFormData] = useState<ProductType>(emptyProduct);
+  const [formData, setFormData] = useState(emptyProduct);
   const [newSection, setNewSection] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -181,6 +180,7 @@ const FormProduct = () => {
               placeholder="Descripción"
               value={formData.description}
               onChange={handleInputChange}
+              maxLength={100}
             />
           </div>
         </div>
