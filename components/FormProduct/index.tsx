@@ -66,10 +66,11 @@ const FormProduct = () => {
   };
 
   const isFormValid = () => {
-    const { name, price, section, image } = formData;
+    const { name, price, section, image, description } = formData;
     return name.trim() !== '' &&
       section.trim() !== '' &&
       image !== '' &&
+      description !== '' &&
       price > 0;
   };
 
@@ -180,7 +181,7 @@ const FormProduct = () => {
               placeholder="Descripción"
               value={formData.description}
               onChange={handleInputChange}
-              maxLength={100}
+              maxLength={135}
             />
           </div>
         </div>
