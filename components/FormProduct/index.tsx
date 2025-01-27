@@ -9,7 +9,7 @@ import { ProductType } from '@/types/model';
 const FormProduct = () => {
   const emptyProduct = {
     name: '',
-    price: '',
+    price: 0,
     description: '',
     section: '',
     image: ''
@@ -68,10 +68,9 @@ const FormProduct = () => {
   const isFormValid = () => {
     const { name, price, section, image } = formData;
     return name.trim() !== '' &&
-      price.trim() !== '' &&
       section.trim() !== '' &&
       image !== '' &&
-      Number(price) > 0;
+      price > 0;
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -148,13 +147,16 @@ const FormProduct = () => {
           </div>
           <div className={s.container__form__down__texts}>
             {newSection ? (
-              <input
-                type="text"
-                name="section"
-                placeholder="Seccion nueva"
-                value={formData.section}
-                onChange={handleInputChange}
-              />
+              <div className={s.container__form__down__texts__new_input}>
+                <input
+                  type="text"
+                  name="section"
+                  placeholder="Seccion nueva"
+                  value={formData.section}
+                  onChange={handleInputChange}
+                />
+                <button type='button' onClick={() => setNewSection(false)}>&lt;</button>
+              </div>
             ) : (
               <select
                 name="section"

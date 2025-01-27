@@ -127,6 +127,22 @@
         @media (--small) {
           flex-direction: column;
         }
+
+        &__new_input {
+          display: flex;
+
+          & input {
+            width: 120px;
+          }
+
+          & button {
+            width: 30px;
+            background-color: #0050c3;
+            color: white;
+            border-radius: 0;
+            border: none;
+          }
+        }
       }
     }
   }
