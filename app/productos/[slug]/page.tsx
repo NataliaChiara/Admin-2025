@@ -1,6 +1,7 @@
 import { getProduct } from "@/app/api/api"
 import s from './page.module.css'
 import Link from "next/link"
+import FormProduct from "@/components/FormProduct"
 
 export default async function Page({
   params,
@@ -16,7 +17,7 @@ export default async function Page({
         <Link href='/productos'>Productos</Link>
       </nav>
       <main className={s.page__main}>
-        {product.name}
+        <FormProduct productToUpdate={product} />
       </main>
     </div>
   )

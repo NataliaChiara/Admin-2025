@@ -3,10 +3,29 @@
 import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import Image from 'next/image';
 import s from './FormProduct.module.css';
+import { useEffect } from 'react';
+import { getSections, updateProduct } from '@/app/api/api';
 import { Toaster, toast } from 'react-hot-toast';
 import { addProduct } from '@/app/api/api';
+import { ProductType } from '@/types/model';
 
-const FormProduct = ({ sections, fetchProducts }: { sections: { section: string }[], fetchProducts: () => void }) => {
+const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => {
+  const [sections, setSections] = useState<{ section: string }[]>([])
+
+  const fetchProducts = async () => {
+    try {
+      const s = await getSections()
+      setSections(s.sections)
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+
   const emptyProduct = {
     name: '',
     slug: '',
@@ -17,7 +36,7 @@ const FormProduct = ({ sections, fetchProducts }: { sections: { section: string 
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [formData, setFormData] = useState(emptyProduct);
+  const [formData, setFormData] = useState(productToUpdate ? productToUpdate : emptyProduct);
   const [newSection, setNewSection] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -102,11 +121,34 @@ const FormProduct = ({ sections, fetchProducts }: { sections: { section: string 
     setNewSection(false);
   };
 
+  const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const updatedProduct = {
+      name: formData.name,
+      slug: formData.name.toLowerCase().replaceAll(' ', '-'),
+      price: formData.price,
+      description: formData.description,
+      section: formData.section,
+      image: '/images/hamburguesas/americana.webp'
+    }
+
+    const success = await updateProduct(productToUpdate!.slug, updatedProduct);
+
+    if (success) {
+      toast.success(`Producto '${formData.name}' actualizado con éxito`);
+
+    } else {
+      toast.error('Hubo un error al actualizar el producto');
+    }
+
+  };
+
   return (
     <div className={s.container}>
       <Toaster position="top-center" reverseOrder={false} />
       <button className={s.container__close}>x</button>
-      <form className={s.container__form} onSubmit={handleSubmit}>
+      <form className={s.container__form} onSubmit={productToUpdate ? handleUpdate : handleSubmit}>
         <div className={s.container__form__up}>
           <input
             type="text"
