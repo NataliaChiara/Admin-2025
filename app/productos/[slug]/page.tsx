@@ -1,8 +1,11 @@
+import { getProduct } from "@/app/api/api"
+
 export default async function Page({
   params,
 }: {
   params: Promise<{ slug: string }>
 }) {
   const slug = (await params).slug
-  return <div>My Post: {slug}</div>
+  const product = await getProduct(slug)
+  return <div>My Post: {product.name}</div>
 }
