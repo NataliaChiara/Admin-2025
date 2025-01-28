@@ -30,3 +30,24 @@ export const addProduct = async (productToAdd: ProductType): Promise<boolean> =>
     return false;
   }
 };
+
+export const deleteProduct = async (slug: string): Promise<boolean> => {
+  try {
+    const response = await fetch(`http://localhost:4000/products/${slug}`, {
+      method: "DELETE",
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Producto eliminado con éxito:", data);
+      return true;
+    } else {
+      console.log("Error al eliminar producto:", data.error);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    return false;
+  }
+};

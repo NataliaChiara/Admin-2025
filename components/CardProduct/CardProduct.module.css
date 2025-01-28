@@ -13,6 +13,7 @@
   &__delete {
     background: none;
     position: absolute;
+    border: none;
   }
 
   &__update {
