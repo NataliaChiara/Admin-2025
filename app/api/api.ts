@@ -1,7 +1,9 @@
 import { ProductType } from "@/types/model";
 
+// productos
+
 export async function getProducts() {
-  const res = await fetch("http://localhost:4000/");
+  const res = await fetch("http://localhost:4000/products");
   const resJson = await res.json();
   return resJson;
 }
@@ -90,3 +92,11 @@ export const updateProduct = async (
     return false;
   }
 };
+
+// secciones
+
+export async function getSections() {
+  const res = await fetch("http://localhost:4000/sections");
+  const resJson = await res.json();
+  return resJson;
+}

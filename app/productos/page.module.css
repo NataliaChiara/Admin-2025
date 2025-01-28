@@ -85,16 +85,18 @@
       }
     }
 
-    &__body {
-      &__products {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 100px 50px;
-        padding: 50px 0;
-        position: relative;
-        width: 80vw;
-        margin: auto;
+    &__products {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 100px 50px;
+      padding: 50px 0;
+      position: relative;
+      width: 80vw;
+      margin: auto;
+
+      & span {
+        text-transform: capitalize;
       }
     }
   }
