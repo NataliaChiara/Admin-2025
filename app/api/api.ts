@@ -96,7 +96,7 @@ export const updateProduct = async (
 // secciones
 
 export async function getSections() {
-  const res = await fetch("http://localhost:4000/sections");
+  const res = await fetch("http://localhost:4000/products/sections");
   const resJson = await res.json();
   return resJson;
 }

@@ -4,36 +4,28 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import CardProduct from "@/components/CardProduct";
 import { getProducts, getSections } from "../api/api";
-import { ProductType, SectionType } from "@/types/model";
+import { ProductType } from "@/types/model";
 import { deleteProduct } from "../api/api";
 import { toast, Toaster } from "react-hot-toast";
 
 export default function Productos() {
   const [selectedSection, setSelectedSection] = useState('');
-  const [sections, setSections] = useState<SectionType[]>([])
+  const [sections, setSections] = useState<{ section: string }[]>([])
   const [products, setProducts] = useState<ProductType[]>([]);
-
-  const fetchSections = async () => {
-    try {
-      const data = await getSections();
-      setSections(data.sections);
-      setSelectedSection(data.sections[0].slug)
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
 
   const fetchProducts = async () => {
     try {
-      const data = await getProducts();
-      setProducts(data.products);
+      const p = await getProducts();
+      const s = await getSections()
+      setProducts(p.products);
+      setSections(s.sections)
+      setSelectedSection(s.sections[0].section)
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
   useEffect(() => {
-    fetchSections()
     fetchProducts();
   }, []);
 
@@ -63,14 +55,13 @@ export default function Productos() {
         <div className={s.page__main__sections}>
           <ul className={s.page__main__sections__list}>
             {selectedSection !== '' && sections.length >= 1 && sections.map((item) => {
-              const { slug, name } = item;
               return (
                 <li
-                  key={slug}
-                  onClick={() => setSelectedSection(slug)}
-                  className={selectedSection === slug ? s.page__main__sections__list__selected : undefined}
+                  key={item.section}
+                  onClick={() => setSelectedSection(item.section)}
+                  className={selectedSection === item.section ? s.page__main__sections__list__selected : undefined}
                 >
-                  {name}
+                  {item.section}
                 </li>
               );
             })}
@@ -79,18 +70,27 @@ export default function Productos() {
         </div>
         <div className={s.page__main__products}>
           {products.length > 0 ? (
-            products
-              .filter((item) => item.sectionSlug === selectedSection)
-              .length > 0 ? (
-              products
-                .filter((item) => item.sectionSlug === selectedSection)
-                .map((item) => <CardProduct key={item.slug} product={item} handleDelete={handleDelete} />)
-            ) : (
-              <p>No se encontraron productos de la categoría <span>&apos;{selectedSection.replaceAll('-', ' ')}&apos;</span>.</p>
-            )
+            (() => {
+              const filteredProducts = products.filter(
+                (product) => product.section === selectedSection
+              );
+
+              if (filteredProducts.length > 0) {
+                return (
+                  <>
+                    {filteredProducts.map((product) => (
+                      <CardProduct key={product.slug} product={product} handleDelete={handleDelete} />
+                    ))}
+                  </>
+                );
+              } else {
+                return <p>No hay productos de la categoría {selectedSection}.</p>;
+              }
+            })()
           ) : (
-            <p>No hay ningun producto disponible.</p>
+            <p>No hay ningún producto disponible.</p>
           )}
+
         </div>
       </main>
     </div>

@@ -4,14 +4,13 @@ import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import Image from 'next/image';
 import s from './FormProduct.module.css';
 import { Toaster, toast } from 'react-hot-toast';
-import { sections } from '@/lib/data';
 import { addProduct } from '@/app/api/api';
 
-const FormProduct = () => {
+const FormProduct = ({ sections, fetchProducts }: { sections: { section: string }[], fetchProducts: () => void }) => {
   const emptyProduct = {
     name: '',
     slug: '',
-    price: 0,
+    price: 1,
     description: '',
     section: '',
     image: ''
@@ -83,9 +82,11 @@ const FormProduct = () => {
       slug: formData.name.toLowerCase().replaceAll(' ', '-'),
       price: formData.price,
       description: formData.description,
-      sectionSlug: formData.section.toLowerCase().replaceAll(' ', '-'),
-      image: '/images/americana.webp'
+      section: formData.section,
+      image: '/images/hamburguesas/americana.webp'
     }
+
+    console.log(productToAdd)
 
     const success = await addProduct(productToAdd);
 
@@ -95,7 +96,7 @@ const FormProduct = () => {
       toast.error('Hubo un error al agregar el producto');
     }
 
-    // Restablecer los datos del formulario y otros estados
+    fetchProducts();
     setFormData(emptyProduct);
     clearImage();
     setNewSection(false);
@@ -117,6 +118,7 @@ const FormProduct = () => {
           <input
             type="number"
             name="price"
+            min="1"
             placeholder="Precio"
             value={formData.price}
             onChange={handleInputChange}
@@ -178,9 +180,9 @@ const FormProduct = () => {
               >
                 {formData.section === '' && <option value="">Sección</option>}
                 <optgroup label="Secciones">
-                  {sections.map((seccion) => (
-                    <option value={seccion.name} key={seccion.slug}>
-                      {seccion.name}
+                  {sections.map((item) => (
+                    <option value={item.section} key={item.section}>
+                      {item.section}
                     </option>
                   ))}
                 </optgroup>
