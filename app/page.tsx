@@ -4,26 +4,39 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import s from "./page.module.css";
 import Link from "next/link";
-import cs from "classnames";
 import { getInfo } from "./api/api";
 import { InformationType } from "@/types/model";
+import Schedule from "@/components/Schedule";
+import Contact from "@/components/Contact";
+import Info from "@/components/Info/Index";
 
 export default function Home() {
   const [data, setData] = useState<InformationType | undefined>(undefined);
+  const [modal, setModal] = useState({
+    state: false,
+    key: ''
+  })
+
+  const fetchInfo = async () => {
+    try {
+      const res = await getInfo();
+      setData(res);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await getInfo();
-        setData(res);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
+    fetchInfo();
   }, []);
 
+  const changeModal = (type?: string) => {
+    if (type == undefined) {
+      setModal({ state: false, key: '' })
+    } else {
+      setModal({ state: true, key: type })
+    }
+  }
 
   return (
     <div className={s.page}>
@@ -33,43 +46,28 @@ export default function Home() {
       </nav>
       <main className={s.page__main}>
         {data !== undefined && (
-          <div className={s.page__main__info}>
-            <div className={s.editable}>
-              <Image className={s.edit_btn} src='/icons/edit.png' alt="Edit icon" aria-label="Ir a editar" width={20} height={20} />
-              <Image src={data.info[0].logo} width={200} height={200} alt="Logo" aria-label="Logo" />
+          <>
+            <div className={s.editable} onClick={() => changeModal('info')}>
+              <Image className={s.editable__edit_btn} src='/icons/edit.png' alt="Edit icon" aria-label="Ir a editar" width={20} height={20} />
+              <Info info={data.info} />
             </div>
-            <div className={cs(s.page__main__info__contact, s.editable)}>
-              <Image className={s.edit_btn} src='/icons/edit.png' alt="Edit icon" aria-label="Ir a editar" width={20} height={20} />
-              <h1>{data.info[0].name}</h1>
-              {data.contact.map((item) => {
-                const { label, type, link, icon } = item
-                return (
-                  <a target="__blank" key={type} href={link}>
-                    <Image src={icon} width={30} height={30} alt={`${type} icon`} aria-label={`Ir a ${type}`} />
-                    <span>- {label && label}</span>
-                  </a>
-                )
-              })}
+            <div className={s.editable} onClick={() => changeModal('contacto')}>
+              <Image className={s.editable__edit_btn} src='/icons/edit.png' alt="Edit icon" aria-label="Ir a editar" width={20} height={20} />
+              <Contact contact={data.contact} />
             </div>
-            <div className={cs(s.page__main__info__schedule, s.editable)}>
-              <Image className={s.edit_btn} src='/icons/edit.png' alt="Edit icon" aria-label="Ir a editar" width={20} height={20} />
-              <h2>Horarios de Atención:</h2>
-              <ul>
-                {data.schedule.map((item) => {
-                  const { day, hours } = item
-                  return (
-                    <li key={day}>
-                      <span>
-                        {day}
-                      </span>
-                      <span>
-                        <Image src='/icons/clock.svg' alt="Clock icon" width={15} height={15} aria-label="Clock icon" />
-                        {hours === '' ? 'Cerrado' : hours}
-                      </span>
-                    </li>
-                  )
-                })}
-              </ul>
+            <div className={s.editable} onClick={() => changeModal('schedule')}>
+              <Image className={s.editable__edit_btn} src='/icons/edit.png' alt="Edit icon" aria-label="Ir a editar" width={20} height={20} />
+              <Schedule schedule={data.schedule} />
+            </div>
+          </>
+        )}
+        {modal.state && (
+          <div className={s.modal_container}>
+            <div className={s.modal}>
+              <button onClick={() => changeModal()}>X</button>
+              {modal.key === "info" && <h1>Info</h1>}
+              {modal.key === "contacto" && <Contact contact={data!.contact} isUpdate fetchInfo={fetchInfo} changeModal={changeModal} />}
+              {modal.key === "schedule" && <h1>Schedule</h1>}
             </div>
           </div>
         )}

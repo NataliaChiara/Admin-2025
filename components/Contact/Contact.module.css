@@ -1,0 +1,21 @@
+.default {
+  display: flex;
+  flex-direction: column;
+
+  & h2 {
+    margin-bottom: 15px;
+  }
+
+  & a {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    color: #0050c3;
+
+    &:hover {
+      /* elimina el estilo de globals.css */
+      scale: 1;
+      text-decoration: underline;
+    }
+  }
+}

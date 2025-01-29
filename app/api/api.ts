@@ -1,6 +1,6 @@
 import { ProductType } from "@/types/model";
 
-// productos
+// ${type}s
 
 export async function getProducts() {
   const res = await fetch("http://localhost:4000/products");
@@ -13,7 +13,7 @@ export const getProduct = async (slug: string): Promise<ProductType> => {
     method: "GET",
   });
   const data = await response.json();
-  console.log("Producto encontrado", data);
+  console.log("${type} encontrado", data);
   return data.product[0];
 };
 
@@ -32,10 +32,10 @@ export const addProduct = async (
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Producto agregado con éxito:", data);
+      console.log("${type} agregado con éxito:", data);
       return true;
     } else {
-      console.log("Error al agregar producto:", data.error);
+      console.log("Error al agregar ${type}:", data.error);
       return false;
     }
   } catch (error) {
@@ -53,10 +53,10 @@ export const deleteProduct = async (slug: string): Promise<boolean> => {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Producto eliminado con éxito:", data);
+      console.log("${type} eliminado con éxito:", data);
       return true;
     } else {
-      console.log("Error al eliminar producto:", data.error);
+      console.log("Error al eliminar ${type}:", data.error);
       return false;
     }
   } catch (error) {
@@ -81,10 +81,10 @@ export const updateProduct = async (
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Producto actualizado con éxito:", data);
+      console.log("${type} actualizado con éxito:", data);
       return true;
     } else {
-      console.log("Error al actualizar producto:", data.error);
+      console.log("Error al actualizar ${type}:", data.error);
       return false;
     }
   } catch (error) {
@@ -108,3 +108,31 @@ export async function getInfo() {
   const resJson = await res.json();
   return resJson;
 }
+
+export const updateInfo = async (
+  type: string,
+  updatedLocation: { label: string; link: string }
+): Promise<boolean> => {
+  try {
+    const response = await fetch(`http://localhost:4000/information/${type}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedLocation),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log(`${type} actualizado con éxito:`, data);
+      return true;
+    } else {
+      console.log(`Error al actualizar ${type}:`, data.error);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    return false;
+  }
+};

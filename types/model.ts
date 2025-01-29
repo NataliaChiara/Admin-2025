@@ -7,20 +7,25 @@ export interface ProductType {
   image: string;
 }
 
+export interface InfoType {
+  slug: string;
+  name: string;
+  logo: string;
+}
+
+export interface ContactType {
+  type: string;
+  label: string;
+  link: string;
+}
+
+export interface ScheduleType {
+  day: string;
+  hours: string;
+}
+
 export interface InformationType {
-  info: {
-    slug: string;
-    name: string;
-    logo: string;
-  }[];
-  contact: {
-    type: string;
-    label: string;
-    link: string;
-    icon: string;
-  }[];
-  schedule: {
-    day: string;
-    hours: string;
-  }[];
+  info: InfoType[];
+  contact: ContactType[];
+  schedule: ScheduleType[];
 }
