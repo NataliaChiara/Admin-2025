@@ -2,6 +2,7 @@ import Image from "next/image";
 import s from "./page.module.css";
 import Link from "next/link";
 import { info } from "@/lib/data";
+import cs from "classnames";
 
 export default function Home() {
   const { name, logo, contact, schedule } = info
@@ -13,9 +14,13 @@ export default function Home() {
       </nav>
       <main className={s.page__main}>
         <div className={s.page__main__info}>
-          <Image src={logo} width={200} height={200} alt="Logo" aria-label="Logo" />
-          <h1>{name}</h1>
-          <div className={s.page__main__info__contact}>
+          <div className={s.editable}>
+            <Image className={s.edit_btn} src='/icons/edit.png' alt="Edit icon" aria-label="Ir a editar" width={20} height={20} />
+            <Image src={logo} width={200} height={200} alt="Logo" aria-label="Logo" />
+          </div>
+          <div className={cs(s.page__main__info__contact, s.editable)}>
+            <Image className={s.edit_btn} src='/icons/edit.png' alt="Edit icon" aria-label="Ir a editar" width={20} height={20} />
+            <h1>{name}</h1>
             {contact.map((item) => {
               const { label, type, link, icon } = item
               return (
@@ -26,7 +31,8 @@ export default function Home() {
               )
             })}
           </div>
-          <div className={s.page__main__info__schedule}>
+          <div className={cs(s.page__main__info__schedule, s.editable)}>
+            <Image className={s.edit_btn} src='/icons/edit.png' alt="Edit icon" aria-label="Ir a editar" width={20} height={20} />
             <h2>Horarios de Atención:</h2>
             <ul>
               {schedule.map((item) => {
@@ -46,7 +52,6 @@ export default function Home() {
             </ul>
           </div>
         </div>
-
       </main>
     </div>
   );

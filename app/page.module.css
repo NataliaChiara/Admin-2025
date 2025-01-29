@@ -53,11 +53,14 @@
     &__info {
       display: flex;
       flex-direction: column;
-      gap: 15px;
 
       &__contact {
         display: flex;
         flex-direction: column;
+
+        & h1 {
+          margin-bottom: 15px;
+        }
 
         & a {
           display: flex;
@@ -73,7 +76,6 @@
         }
       }
       &__schedule {
-        margin-top: 30px;
         & ul {
           margin-top: 15px;
           list-style: none;
@@ -100,4 +102,29 @@
       }
     }
   }
+}
+
+.editable {
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 15px;
+  transition: 0.2s;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.1);
+    border-color: #cccccc;
+
+    .edit_btn {
+      opacity: 1;
+    }
+  }
+}
+
+.edit_btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  opacity: 0;
 }
