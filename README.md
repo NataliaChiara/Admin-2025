@@ -3,4 +3,5 @@ Para correr este proyecto primero se tiene que ejecutar 'npm run dev' en el proy
 falta
 -logica imagenes
 -api para info
+-reestructurar las request para que sean mas claras, ejemplo /products/sections
 -login/cuenta

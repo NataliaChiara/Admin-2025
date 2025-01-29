@@ -100,3 +100,11 @@ export async function getSections() {
   const resJson = await res.json();
   return resJson;
 }
+
+// info
+
+export async function getInfo() {
+  const res = await fetch("http://localhost:4000/information");
+  const resJson = await res.json();
+  return resJson;
+}
