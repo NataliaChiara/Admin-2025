@@ -49,7 +49,7 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
       const file = e.target.files?.[0];
       if (file) {
         const validTypes = ['image/jpeg', 'image/png'];
-        const maxSize = 5 * 1024 * 1024; // 5MB
+        const maxSize = 400 * 1024; // 400 KB
 
         if (!validTypes.includes(file.type)) {
           toast.error('Solo se permiten imágenes JPG o PNG');

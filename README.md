@@ -2,4 +2,5 @@ Para correr este proyecto primero se tiene que ejecutar 'npm run dev' en el proy
 
 falta
 -logica imagenes
+-api para info
 -login/cuenta
