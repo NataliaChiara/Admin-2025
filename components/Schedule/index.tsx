@@ -1,8 +1,16 @@
 import Image from 'next/image';
 import s from './Schedule.module.css';
 import { ScheduleType } from '@/types/model';
+import { sortWeekdays } from '@/lib/sortWeekDays';
 
 const Schedule = ({ schedule }: { schedule: ScheduleType[], }) => {
+
+  // ordenar de lunes a domingo
+  sortWeekdays(schedule)
+
+
+
+
   return (
     <div className={s.container}>
       <h2>Horarios de Atención:</h2>
