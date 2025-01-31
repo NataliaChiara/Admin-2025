@@ -66,7 +66,7 @@ export default function Productos() {
               );
             })}
           </ul>
-          <a className={s.page__main__sections__add} href="/agregar-producto">Agregar producto</a>
+          <Link className={s.page__main__sections__add} href="/productos/agregar-producto">Agregar producto</Link>
         </div>
         <div className={s.page__main__products}>
           {products.length > 0 ? (

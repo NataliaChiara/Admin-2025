@@ -6,5 +6,6 @@ falta
 -login/cuenta
 
 mejoras:
+-agregar modal, 'Seguro desea eliminar el producto tal?'
 -hacer index general para componentes
 -reestructurar las request para que sean mas claras, ejemplo /products/sections
