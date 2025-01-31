@@ -3,7 +3,7 @@ import { ChangeEvent } from 'react';
 import { ContactType } from '@/types/model';
 import s from './Contact.module.css';
 import { useState, FormEvent } from 'react';
-import { updateInfo } from '@/app/api/api';
+import { updateContact } from '@/app/api/api';
 import { Toaster, toast } from 'react-hot-toast';
 
 const Contact = ({ contact, isUpdate, fetchInfo, changeModal }: { contact: ContactType[], isUpdate?: boolean, fetchInfo?: () => void, changeModal?: () => void }) => {
@@ -28,8 +28,7 @@ const Contact = ({ contact, isUpdate, fetchInfo, changeModal }: { contact: Conta
 
   const handleUpdate = async (e: FormEvent<HTMLFormElement>, type: string, data: { label: string, link: string }) => {
     e.preventDefault();
-    const success = await updateInfo(type, data);
-    console.log(type, data)
+    const success = await updateContact(type, data);
     if (success) {
       toast.success(`${type} actualizado con éxito`);
       fetchInfo!()
@@ -61,7 +60,6 @@ const Contact = ({ contact, isUpdate, fetchInfo, changeModal }: { contact: Conta
             />
             <button type='submit'>Actualizar Location</button>
           </form>
-
           <form onSubmit={(e) => handleUpdate(e, 'instagram', newInstagram)}>
             <input
               type="text"
@@ -79,7 +77,6 @@ const Contact = ({ contact, isUpdate, fetchInfo, changeModal }: { contact: Conta
             />
             <button type='submit'>Actualizar Instagram</button>
           </form>
-
           <form onSubmit={(e) => handleUpdate(e, 'whatsapp', newWhatsapp)}>
             <input
               type="text"
@@ -98,7 +95,6 @@ const Contact = ({ contact, isUpdate, fetchInfo, changeModal }: { contact: Conta
             <button type='submit'>Actualizar WhatsApp</button>
           </form>
         </div>
-
       ) : (
         <div className={s.default}>
           <h2>Contacto</h2>
@@ -114,11 +110,9 @@ const Contact = ({ contact, isUpdate, fetchInfo, changeModal }: { contact: Conta
             <Image src='/icons/instagram.svg' width={30} height={30} alt={`instagram icon`} aria-label={`Ir a instagram`} />
             <span>- {instagram.label}</span>
           </a>
-
         </div>
       )}
     </>
-
   );
 };
 

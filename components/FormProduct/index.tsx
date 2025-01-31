@@ -105,8 +105,6 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
       image: '/images/hamburguesas/americana.webp'
     }
 
-    console.log(productToAdd)
-
     const success = await addProduct(productToAdd);
 
     if (success) {

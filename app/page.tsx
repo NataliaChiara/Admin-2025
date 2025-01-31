@@ -67,7 +67,7 @@ export default function Home() {
               <button onClick={() => changeModal()}>X</button>
               {modal.key === "info" && <h1>Info</h1>}
               {modal.key === "contacto" && <Contact contact={data!.contact} isUpdate fetchInfo={fetchInfo} changeModal={changeModal} />}
-              {modal.key === "schedule" && <h1>Schedule</h1>}
+              {modal.key === "schedule" && <Schedule schedule={data!.schedule} isUpdate fetchInfo={fetchInfo} changeModal={changeModal} />}
             </div>
           </div>
         )}

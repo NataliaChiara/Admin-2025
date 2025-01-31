@@ -109,18 +109,22 @@ export async function getInfo() {
   return resJson;
 }
 
-export const updateInfo = async (
+// actualizar contacto
+export const updateContact = async (
   type: string,
   updatedLocation: { label: string; link: string }
 ): Promise<boolean> => {
   try {
-    const response = await fetch(`http://localhost:4000/information/${type}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedLocation),
-    });
+    const response = await fetch(
+      `http://localhost:4000/information/contact/${type}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedLocation),
+      }
+    );
 
     const data = await response.json();
 
@@ -129,6 +133,38 @@ export const updateInfo = async (
       return true;
     } else {
       console.log(`Error al actualizar ${type}:`, data.error);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    return false;
+  }
+};
+
+// actualizar schedule
+export const updateSchedule = async (
+  day: string,
+  hours: { hours: string }
+): Promise<boolean> => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/information/schedule/${day}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(hours),
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log(`${day} actualizado con éxito:`, data);
+      return true;
+    } else {
+      console.log(`Error al actualizar ${day}:`, data.error, response);
       return false;
     }
   } catch (error) {
