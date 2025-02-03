@@ -93,11 +93,13 @@
 .modal {
   position: absolute;
   top: 50%;
+  left: 50%;
   height: 50%;
-  transform: translateX(50%) translateY(-50%);
-  min-width: 300px;
   overflow-y: scroll;
-  width: 50vw;
+  transform: translateY(-50%) translateX(-50%);
+  min-width: 500px;
+  width: 60vw;
+  min-height: 400px;
   height: 50vh;
   background-color: white;
   border: 1px solid #cccccc;

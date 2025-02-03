@@ -10,3 +10,4 @@ mejoras:
 -agregar modal, 'Seguro desea eliminar el producto tal?'
 -hacer index general para componentes
 -reestructurar las request para que sean mas claras, hay cosas que devuelven array y no deberian serlo
+-hay cosas que se pueden reutilizar, muchas

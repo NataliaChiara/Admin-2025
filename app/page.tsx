@@ -65,7 +65,7 @@ export default function Home() {
           <div className={s.modal_container}>
             <div className={s.modal}>
               <button onClick={() => changeModal()}>X</button>
-              {modal.key === "info" && <h1>Info</h1>}
+              {modal.key === "info" && <Info info={data!.info} isUpdate />}
               {modal.key === "contacto" && <Contact contact={data!.contact} isUpdate fetchInfo={fetchInfo} changeModal={changeModal} />}
               {modal.key === "schedule" && <Schedule schedule={data!.schedule} isUpdate fetchInfo={fetchInfo} changeModal={changeModal} />}
             </div>
