@@ -47,6 +47,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
 
     @media (--large) {
       height: 100%;

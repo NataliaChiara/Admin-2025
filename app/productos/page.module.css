@@ -43,6 +43,7 @@
     height: calc(100% - 50px);
     width: 100%;
     /* padding: 30px 15px; */
+    overflow-y: scroll;
 
     @media (--large) {
       height: 100%;

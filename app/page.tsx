@@ -44,7 +44,7 @@ export default function Home() {
         <Link href='/' className={s.page__nav__selected}>Homepage</Link>
         <Link href='/productos'>Productos</Link>
       </nav>
-      <main className={s.page__main}>
+      <main className={s.page__main} style={modal.state ? { overflowY: "hidden" } : { overflowY: "scroll" }}>
         {data !== undefined && (
           <>
             <div className={s.editable} onClick={() => changeModal('info')}>
