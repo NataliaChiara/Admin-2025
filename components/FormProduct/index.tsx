@@ -4,13 +4,14 @@ import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import Image from 'next/image';
 import s from './FormProduct.module.css';
 import { useEffect } from 'react';
-import { getSections, updateProduct } from '@/app/api/api';
+import { getSections, updateProduct, uploadFileToGitHub } from '@/app/api/api';
 import { Toaster, toast } from 'react-hot-toast';
 import { addProduct } from '@/app/api/api';
 import { ProductType } from '@/types/model';
 
 const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => {
   const [sections, setSections] = useState<{ section: string }[]>([])
+  const [imageFile, setImageFile] = useState<File | undefined>(undefined)
 
   const fetchProducts = async () => {
     try {
@@ -64,10 +65,10 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
         const reader = new FileReader();
         reader.onloadend = () => {
           setImagePreview(reader.result as string);
-          // Aca se tendria que subir al storage, obtener la url y esa url meterla a formData.image
           setFormData(prev => ({ ...prev, image: reader.result as string }));
         };
         reader.readAsDataURL(file);
+        setImageFile(file)
       }
     } else if (value === "Crear nueva") {
       setNewSection(true)
@@ -96,27 +97,34 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const productToAdd = {
-      name: formData.name,
-      slug: formData.name.toLowerCase().replaceAll(' ', '-'),
-      price: formData.price,
-      description: formData.description,
-      section: formData.section,
-      image: '/images/hamburguesas/americana.webp'
-    }
+    const imageUrl = await uploadFileToGitHub(imageFile!);
 
-    const success = await addProduct(productToAdd);
+    if (imageUrl) {
+      const productToAdd = {
+        name: formData.name,
+        slug: formData.name.toLowerCase().replaceAll(' ', '-'),
+        price: formData.price,
+        description: formData.description,
+        section: formData.section,
+        image: imageUrl
+      }
 
-    if (success) {
-      toast.success(`Producto '${formData.name}' agregado con éxito`);
+      const success = await addProduct(productToAdd);
+
+      if (success) {
+        toast.success(`Producto '${formData.name}' agregado con éxito`);
+      } else {
+        toast.error('Hubo un error al agregar el producto');
+      }
+
+      fetchProducts();
+      setFormData(emptyProduct);
+      clearImage();
+      setNewSection(false);
     } else {
-      toast.error('Hubo un error al agregar el producto');
+      toast.error('Hubo un error al subir la imagen');
     }
 
-    fetchProducts();
-    setFormData(emptyProduct);
-    clearImage();
-    setNewSection(false);
   };
 
   const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {

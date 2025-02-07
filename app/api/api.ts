@@ -172,3 +172,75 @@ export const updateSchedule = async (
     return false;
   }
 };
+
+// subir imagenes a repositorio
+
+export async function uploadFileToGitHub(file: File): Promise<string | null> {
+  const owner = process.env.GITHUB_USERNAME;
+  const repo = process.env.GITHUB_REPO;
+  const branch = process.env.GITHUB_BRANCH;
+  const token = process.env.GITHUB_TOKEN;
+
+  return new Promise((resolve, reject) => {
+    const filePath = `data/${file.name}`;
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = async () => {
+      if (typeof reader.result !== "string") {
+        console.error("Error al leer el archivo.");
+        reject("Error al leer el archivo.");
+        return;
+      }
+
+      const base64Content = reader.result.split(",")[1];
+
+      try {
+        // Verificar si el archivo ya existe
+        const existingFileResponse = await fetch(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/vnd.github+json",
+          },
+        });
+
+        if (existingFileResponse.ok) {
+          const existingData = await existingFileResponse.json();
+          console.warn(
+            `El archivo "${file.name}" ya existe. Se devolverá su URL.`
+          );
+          resolve(existingData.download_url); // Retorna la URL del archivo existente
+          return;
+        }
+
+        // Si el archivo no existe, proceder con la subida
+        const response = await fetch(apiUrl, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/vnd.github+json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: `Upload ${file.name}`,
+            content: base64Content,
+            branch: branch,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error en la solicitud: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Archivo subido:", data.content?.download_url);
+        resolve(data.content?.download_url || null);
+      } catch (error) {
+        console.error("Error al subir el archivo:", error);
+        reject(error);
+      }
+    };
+  });
+}
