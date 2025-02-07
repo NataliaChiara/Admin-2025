@@ -10,8 +10,22 @@ import { addProduct } from '@/app/api/api';
 import { ProductType } from '@/types/model';
 
 const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => {
+
+  const emptyProduct = {
+    name: '',
+    slug: '',
+    price: 1,
+    description: '',
+    section: '',
+    image: ''
+  };
+
   const [sections, setSections] = useState<{ section: string }[]>([])
   const [imageFile, setImageFile] = useState<File | undefined>(undefined)
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [formData, setFormData] = useState(productToUpdate ? productToUpdate : emptyProduct);
+  const [newSection, setNewSection] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const fetchProducts = async () => {
     try {
@@ -26,21 +40,6 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
     fetchProducts();
   }, []);
 
-
-  const emptyProduct = {
-    name: '',
-    slug: '',
-    price: 1,
-    description: '',
-    section: '',
-    image: ''
-  };
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [formData, setFormData] = useState(productToUpdate ? productToUpdate : emptyProduct);
-  const [newSection, setNewSection] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -50,7 +49,7 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
       const file = e.target.files?.[0];
       if (file) {
         const validTypes = ['image/jpeg', 'image/png'];
-        const maxSize = 400 * 1024; // 400 KB
+        const maxSize = 1000 * 1024; // 1MB
 
         if (!validTypes.includes(file.type)) {
           toast.error('Solo se permiten imágenes JPG o PNG');
@@ -58,7 +57,7 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
         }
 
         if (file.size > maxSize) {
-          toast.error('La imagen no debe superar los 5MB');
+          toast.error('La imagen no debe superar el MB');
           return;
         }
 
@@ -97,35 +96,40 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const imageUrl = await uploadFileToGitHub(imageFile!);
+    try {
+      const imageUrl = await uploadFileToGitHub(imageFile!);
 
-    if (imageUrl) {
+      if (!imageUrl) {
+        toast.error("No se pudo subir la imagen.");
+        return;
+      }
+
       const productToAdd = {
         name: formData.name,
-        slug: formData.name.toLowerCase().replaceAll(' ', '-'),
+        slug: formData.name.toLowerCase().replaceAll(" ", "-"),
         price: formData.price,
         description: formData.description,
         section: formData.section,
-        image: imageUrl
-      }
+        image: imageUrl,
+      };
 
       const success = await addProduct(productToAdd);
 
       if (success) {
         toast.success(`Producto '${formData.name}' agregado con éxito`);
+        fetchProducts();
+        setFormData(emptyProduct);
+        clearImage();
+        setNewSection(false);
       } else {
-        toast.error('Hubo un error al agregar el producto');
+        toast.error("El producto ya esta agregado.");
       }
-
-      fetchProducts();
-      setFormData(emptyProduct);
-      clearImage();
-      setNewSection(false);
-    } else {
-      toast.error('Hubo un error al subir la imagen');
+    } catch (error) {
+      console.error("Error en handleSubmit:", error);
+      toast.error("Ocurrió un error inesperado. Inténtalo nuevamente.");
     }
-
   };
+
 
   const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -176,10 +176,10 @@ export const updateSchedule = async (
 // subir imagenes a repositorio
 
 export async function uploadFileToGitHub(file: File): Promise<string | null> {
-  const owner = process.env.GITHUB_USERNAME;
-  const repo = process.env.GITHUB_REPO;
-  const branch = process.env.GITHUB_BRANCH;
-  const token = process.env.GITHUB_TOKEN;
+  const owner = process.env.NEXT_PUBLIC_GITHUB_USERNAME;
+  const repo = process.env.NEXT_PUBLIC_GITHUB_REPO;
+  const branch = process.env.NEXT_PUBLIC_GITHUB_BRANCH;
+  const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
 
   return new Promise((resolve, reject) => {
     const filePath = `data/${file.name}`;
@@ -207,11 +207,12 @@ export async function uploadFileToGitHub(file: File): Promise<string | null> {
         });
 
         if (existingFileResponse.ok) {
-          const existingData = await existingFileResponse.json();
           console.warn(
             `El archivo "${file.name}" ya existe. Se devolverá su URL.`
           );
-          resolve(existingData.download_url); // Retorna la URL del archivo existente
+          resolve(
+            `https://raw.githubusercontent.com/NataliaChiara/images/main/data/${file.name}`
+          ); // Retorna la URL del archivo existente
           return;
         }
 
@@ -236,7 +237,9 @@ export async function uploadFileToGitHub(file: File): Promise<string | null> {
 
         const data = await response.json();
         console.log("Archivo subido:", data.content?.download_url);
-        resolve(data.content?.download_url || null);
+        resolve(
+          `https://raw.githubusercontent.com/NataliaChiara/images/main/data/${file.name}`
+        );
       } catch (error) {
         console.error("Error al subir el archivo:", error);
         reject(error);
