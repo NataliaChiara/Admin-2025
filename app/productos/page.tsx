@@ -7,6 +7,7 @@ import { getProducts, getSections } from "../api/api";
 import { ProductType } from "@/types/model";
 import { deleteProduct } from "../api/api";
 import { toast, Toaster } from "react-hot-toast";
+import FrontendLayout from "@/components/FrontendLayout";
 
 export default function Productos() {
   const [selectedSection, setSelectedSection] = useState('');
@@ -45,30 +46,26 @@ export default function Productos() {
   };
 
   return (
-    <div className={s.page}>
-      <Toaster />
-      <nav className={s.page__nav}>
-        <Link href="/">Homepage</Link>
-        <Link href="/productos" className={s.page__nav__selected}>Productos</Link>
-      </nav>
-      <main className={s.page__main}>
-        <div className={s.page__main__sections}>
-          <ul className={s.page__main__sections__list}>
+    <FrontendLayout>
+      <div className={s.container}>
+        <Toaster />
+        <div className={s.container__sections}>
+          <ul className={s.container__sections__list}>
             {selectedSection !== '' && sections.length >= 1 && sections.map((item) => {
               return (
                 <li
                   key={item.section}
                   onClick={() => setSelectedSection(item.section)}
-                  className={selectedSection === item.section ? s.page__main__sections__list__selected : undefined}
+                  className={selectedSection === item.section ? s.container__sections__list__selected : undefined}
                 >
                   {item.section}
                 </li>
               );
             })}
           </ul>
-          <Link className={s.page__main__sections__add} href="/productos/agregar-producto">Agregar producto</Link>
+          <Link className={s.container__sections__add} href="/productos/agregar-producto">Agregar producto</Link>
         </div>
-        <div className={s.page__main__products}>
+        <div className={s.container__products}>
           {products.length > 0 ? (
             (() => {
               const filteredProducts = products.filter(
@@ -92,7 +89,7 @@ export default function Productos() {
           )}
 
         </div>
-      </main>
-    </div>
+      </div>
+    </FrontendLayout>
   );
 }

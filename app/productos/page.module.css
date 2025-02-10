@@ -1,104 +1,60 @@
-.page {
+.container {
+  height: calc(100% - 50px);
   width: 100vw;
-  height: 100vh;
 
   @media (--large) {
-    display: flex;
+    width: calc(100vw - 150px);
+    height: 100vh;
+    overflow-y: scroll;
   }
 
-  &__nav {
+  &__sections {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    width: 100vw;
-    height: 50px;
-    color: grey;
+    justify-content: space-between;
+    padding: 20px;
+    height: 70px;
     border-bottom: 1px solid #cccccc;
 
-    @media (--large) {
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      width: fit-content;
-      height: 100vh;
-      border: none;
-      border-right: 1px solid #cccccc;
-      padding: 30px 15px;
-    }
+    &__list {
+      color: grey;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      width: 90%;
 
-    & a {
-      @media (--large) {
-        height: 50px;
+      & li {
+        cursor: pointer;
+      }
+      &__selected {
+        color: #0050c3;
+        text-decoration: underline;
+        pointer-events: none;
       }
     }
 
-    &__selected {
-      color: #0050c3;
-      text-decoration: underline;
-      pointer-events: none;
+    &__add {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #0050c3;
+      color: white;
     }
   }
 
-  &__main {
-    height: calc(100% - 50px);
-    width: 100%;
-    /* padding: 30px 15px; */
-    overflow-y: scroll;
+  &__products {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 100px 50px;
+    padding: 50px 0;
+    position: relative;
+    width: 80vw;
+    margin: auto;
 
-    @media (--large) {
-      height: 100%;
-      /* padding: 80px; */
-    }
-
-    &__sections {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px;
-      height: 70px;
-
-      border-bottom: 1px solid #cccccc;
-
-      &__list {
-        color: grey;
-        list-style: none;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        width: 90%;
-
-        & li {
-          cursor: pointer;
-        }
-        &__selected {
-          color: #0050c3;
-          text-decoration: underline;
-          pointer-events: none;
-        }
-      }
-
-      &__add {
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #0050c3;
-        color: white;
-      }
-    }
-
-    &__products {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 100px 50px;
-      padding: 50px 0;
-      position: relative;
-      width: 80vw;
-      margin: auto;
-
-      & span {
-        text-transform: capitalize;
-      }
+    & span {
+      text-transform: capitalize;
     }
   }
 }

@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import s from "./page.module.css";
-import Link from "next/link";
 import { getInfo } from "./api/api";
 import { InformationType } from "@/types/model";
 import Schedule from "@/components/Schedule";
 import Contact from "@/components/Contact";
 import Info from "@/components/Info/Index";
+import FrontendLayout from "@/components/FrontendLayout";
 
 export default function Home() {
   const [data, setData] = useState<InformationType | undefined>(undefined);
@@ -39,12 +39,8 @@ export default function Home() {
   }
 
   return (
-    <div className={s.page}>
-      <nav className={s.page__nav}>
-        <Link href='/' className={s.page__nav__selected}>Homepage</Link>
-        <Link href='/productos'>Productos</Link>
-      </nav>
-      <main className={s.page__main} style={modal.state ? { overflowY: "hidden" } : { overflowY: "scroll" }}>
+    <FrontendLayout>
+      <div className={s.container} style={modal.state ? { overflowY: "hidden" } : { overflowY: "scroll" }}>
         {data !== undefined && (
           <>
             <div className={s.editable} onClick={() => changeModal('info')}>
@@ -71,7 +67,8 @@ export default function Home() {
             </div>
           </div>
         )}
-      </main>
-    </div>
+      </div>
+    </FrontendLayout>
+
   );
 }
