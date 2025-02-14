@@ -11,3 +11,14 @@ mejoras:
 -hacer index general para componentes
 -reestructurar las request para que sean mas claras, hay cosas que devuelven array y no deberian serlo
 -hay cosas que se pueden reutilizar, muchas
+
+_________________________________________________________
+
+
+mapeo del sitio
+
+ruta - title
+  / - Homepage
+  /productos - Productos
+  /productos/agregar-producto - Agregar Producto
+  /productos/[slug] - Actualizar [slug]

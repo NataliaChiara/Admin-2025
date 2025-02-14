@@ -9,8 +9,12 @@ import Schedule from "@/components/Schedule";
 import Contact from "@/components/Contact";
 import Info from "@/components/Info/Index";
 import FrontendLayout from "@/components/FrontendLayout";
+import { generatePageTitle } from "@/lib/generatePageTitle";
 
 export default function Home() {
+
+  generatePageTitle('Homepage')
+
   const [data, setData] = useState<InformationType | undefined>(undefined);
   const [modal, setModal] = useState({
     state: false,

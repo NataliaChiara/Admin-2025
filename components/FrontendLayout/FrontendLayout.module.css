@@ -7,12 +7,13 @@
   }
 
   &__nav {
+    background-color: var(--violet);
     display: flex;
     align-items: center;
     justify-content: space-around;
     width: 100vw;
     height: 50px;
-    color: grey;
+    color: white;
     border-bottom: 1px solid #cccccc;
 
     @media (--large) {
@@ -27,15 +28,22 @@
     }
 
     & a {
-      @media (--large) {
-        height: 50px;
-      }
+      width: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 15px;
+      margin: 10px 0;
     }
 
     &__selected {
-      color: #0050c3;
-      text-decoration: underline;
-      pointer-events: none;
+      background-color: white;
+      color: var(--violet);
     }
+  }
+
+  & main {
+    background-color: var(--light-grey);
   }
 }

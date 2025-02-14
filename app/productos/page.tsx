@@ -8,8 +8,12 @@ import { ProductType } from "@/types/model";
 import { deleteProduct } from "../api/api";
 import { toast, Toaster } from "react-hot-toast";
 import FrontendLayout from "@/components/FrontendLayout";
+import { generatePageTitle } from "@/lib/generatePageTitle";
 
 export default function Productos() {
+
+  generatePageTitle('Productos')
+
   const [selectedSection, setSelectedSection] = useState('');
   const [sections, setSections] = useState<{ section: string }[]>([])
   const [products, setProducts] = useState<ProductType[]>([]);

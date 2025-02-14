@@ -71,7 +71,7 @@ const Info = ({ info, isUpdate }: { info: InfoType[], isUpdate?: boolean }) => {
       <Toaster />
       {isUpdate ? (
         <form onSubmit={handleUpdate}>
-          <div className={s.container__img_container}>
+          <div className={s.container__update_img}>
             <input
               ref={fileInputRef}
               type="file"
@@ -111,7 +111,7 @@ const Info = ({ info, isUpdate }: { info: InfoType[], isUpdate?: boolean }) => {
         </form>
       ) : (
         <>
-          <Image src={info[0].logo} width={200} height={200} alt="Logo" aria-label="Logo" />
+          <Image className={s.container__logo} src={info[0].logo} width={200} height={200} alt="Logo" aria-label="Logo" />
           <h1>{info[0].name}</h1>
         </>
       )}
