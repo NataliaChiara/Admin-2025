@@ -13,6 +13,9 @@ import { generatePageTitle } from "@/lib/generatePageTitle";
 export default function Productos() {
 
   generatePageTitle('Productos')
+  window.addEventListener("popstate", function () {
+    console.log(`El usuario ha navegado hacia atrás desde la pagina ${this.document.title}`);
+  });
 
   const [selectedSection, setSelectedSection] = useState('');
   const [sections, setSections] = useState<{ section: string }[]>([])

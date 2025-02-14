@@ -49,7 +49,7 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
       const file = e.target.files?.[0];
       if (file) {
         const validTypes = ['image/jpeg', 'image/png'];
-        const maxSize = 1000 * 1024; // 1MB
+        const maxSize = 5000 * 1024; // 5MB
 
         if (!validTypes.includes(file.type)) {
           toast.error('Solo se permiten imágenes JPG o PNG');
@@ -57,7 +57,7 @@ const FormProduct = ({ productToUpdate }: { productToUpdate?: ProductType }) => 
         }
 
         if (file.size > maxSize) {
-          toast.error('La imagen no debe superar el MB');
+          toast.error('La imagen no debe superar los 5 MB');
           return;
         }
 
